@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/kitchen#"
+     xml:base="http://www.semanticweb.org/kitchen"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    
+    <owl:Ontology rdf:about="http://www.semanticweb.org/kitchen"/>
+    
+    <!-- 基本类定义 -->
+    <owl:Class rdf:about="#KitchenObject"/>
+    <owl:Class rdf:about="#Utensil">
+        <rdfs:subClassOf rdf:resource="#KitchenObject"/>
+    </owl:Class>
+    <owl:Class rdf:about="#Food">
+        <rdfs:subClassOf rdf:resource="#KitchenObject"/>
+    </owl:Class>
+    <owl:Class rdf:about="#Action"/>
+    <owl:Class rdf:about="#Disposition"/>
+    
+    <!-- Disposition子类 -->
+    <owl:Class rdf:about="#Peelability">
+        <rdfs:subClassOf rdf:resource="#Disposition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affordsTask"/>
+                <owl:someValuesFrom rdf:resource="#PeelingAction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Cuttability">
+        <rdfs:subClassOf rdf:resource="#Disposition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affordsTask"/>
+                <owl:someValuesFrom rdf:resource="#CuttingAction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Graspability">
+        <rdfs:subClassOf rdf:resource="#Disposition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affordsTask"/>
+                <owl:someValuesFrom rdf:resource="#GraspingAction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Stirability">
+        <rdfs:subClassOf rdf:resource="#Disposition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affordsTask"/>
+                <owl:someValuesFrom rdf:resource="#StirringAction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#Heatable">
+        <rdfs:subClassOf rdf:resource="#Disposition"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#affordsTask"/>
+                <owl:someValuesFrom rdf:resource="#HeatingAction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <!-- 食物类定义及其倾向性 -->
+    <owl:Class rdf:about="#PeelableFood">
+        <rdfs:subClassOf rdf:resource="#Food"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Peelability"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#affordsTrigger"/>
+                                <owl:allValuesFrom rdf:resource="#Hand"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#CuttableFood">
+        <rdfs:subClassOf rdf:resource="#Food"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Cuttability"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#affordsTrigger"/>
+                                <owl:allValuesFrom rdf:resource="#CuttingTool"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#LiquidFood">
+        <rdfs:subClassOf rdf:resource="#Food"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Stirability"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#affordsTrigger"/>
+                                <owl:allValuesFrom rdf:resource="#StirringTool"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#HeatedFood">
+        <rdfs:subClassOf rdf:resource="#Food"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="#Heatable"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="#affordsTrigger"/>
+                                <owl:allValuesFrom rdf:resource="#HeatingAppliance"/>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <!-- 工具类定义 -->
+    <owl:Class rdf:about="#CuttingTool">
+        <rdfs:subClassOf rdf:resource="#Utensil"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom rdf:resource="#Cuttability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#StirringTool">
+        <rdfs:subClassOf rdf:resource="#Utensil"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom rdf:resource="#Stirability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#HeatingAppliance">
+        <rdfs:subClassOf rdf:resource="#KitchenObject"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="#hasDisposition"/>
+                <owl:someValuesFrom rdf:resource="#Heatable"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <!-- 动作类定义 -->
+    <owl:Class rdf:about="#PeelingAction">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#CuttingAction">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#GraspingAction">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#StirringAction">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+    <owl:Class rdf:about="#HeatingAction">
+        <rdfs:subClassOf rdf:resource="#Action"/>
+    </owl:Class>
+    
+    <!-- 属性定义 -->
+    <owl:ObjectProperty rdf:about="#hasDisposition">
+        <rdfs:domain rdf:resource="#KitchenObject"/>
+        <rdfs:range rdf:resource="#Disposition"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#affordsTask">
+        <rdfs:domain rdf:resource="#Disposition"/>
+        <rdfs:range rdf:resource="#Action"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="#affordsTrigger">
+        <rdfs:domain rdf:resource="#Disposition"/>
+        <rdfs:range rdf:resource="#KitchenObject"/>
+    </owl:ObjectProperty>
+</rdf:RDF>
